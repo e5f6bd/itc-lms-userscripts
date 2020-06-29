@@ -1,0 +1,22 @@
+#assignments-list .header {
+    background-color: #418fde80;
+    height: 4em;
+}
+#assignments-list .header span.icon {
+    border-radius: 10%;
+    padding-top: 3.4em;
+    padding-left: 2em;
+    padding-right: 1.5em;
+    background-color: #edf3f7;
+    background-image: url(https://itc-lms.ecc.u-tokyo.ac.jp/img/subblock_ico_report.png);
+    background-repeat: no-repeat;
+    margin: 4px 0 4px 10px;
+    position: absolute;
+    background-position: center;
+}
+#assignments-list .header h1 {
+     color: #27251F;
+     font-size: 150%;
+     padding: 15px 0 10px 65px;
+     font-weight: normal;
+ }
