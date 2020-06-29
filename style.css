@@ -19,4 +19,23 @@
      font-size: 150%;
      padding: 15px 0 10px 65px;
      font-weight: normal;
- }
+}
+#assignments-list-reload {
+    display: inline-block;
+    margin: -7px 0 0 20px;
+    font-size: 70%;
+}
+#assignmentsTableBody .divTableRow {
+    height: auto;
+}
+#assignmentsTableBody .divTableCell {
+    background: white;
+    padding: 7px 10px;
+    text-align: center;
+}
+#assignmentsTableBody .divTableCell a {
+    color: #545555;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: bold;
+}
