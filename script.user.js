@@ -69,6 +69,7 @@
             (await newAssignments).forEach(e => assignments.push({...e, course}));
         }
         showAssignments(assignments);
+        GM_setValue("assignments", assignments);
 
         button.removeClass("active").children("a").text("更新");
     }
@@ -100,5 +101,7 @@
             .appendTo(tableBody);
         ["科目", "課題", "提出期限", "提出状況"].forEach(name =>
             $("<div>").addClass("divTableHead").text(name).appendTo(headerRow))
+
+        showAssignments(GM_getValue("assignments"));
     });
 })();
