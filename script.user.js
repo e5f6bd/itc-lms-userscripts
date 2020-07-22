@@ -33,6 +33,7 @@
                 until: c.innerHTML,
                 status: d.innerHTML,
                 statusText: d.innerText.trim(),
+                url: a.querySelector("a").href,
             }
         });
     }
@@ -43,10 +44,27 @@
             .filter(x => !["期限内提出", "期限後提出"].includes(x.statusText));
         const tableBody = $("#assignmentsTableBody");
         tableBody.children(".data").remove();
-        for (const {course, title, until, status} of assignments) {
-            $("<div>")
+        const disabledList = GM_getValue("disabledAssignments") || [];
+        for (const {course, title, until, status, url} of assignments) {
+            const row = $("<div>")
                 .addClass("divTableRow data")
-                .appendTo(tableBody).append([
+                .appendTo(tableBody);
+            if(disabledList.indexOf(url) !== -1)
+                row.addClass("disabledRow");
+            row.append([
+                $("<div>").addClass("divTableCell").click(() => {
+                    row.toggleClass("disabledRow");
+                    const disabledList = GM_getValue("disabledAssignments") || [];
+                    const index = disabledList.indexOf(url);
+                    if(row.hasClass("disabledRow")) {
+                        if (index === -1)
+                            disabledList.push(url)
+                    } else {
+                        if (index !== -1)
+                            disabledList.splice(index, 1);
+                    }
+                    GM_setValue("disabledAssignments", disabledList);
+                }),
                 $("<div>").addClass("divTableCell").append(
                     $("<a>").attr("href", `/lms/course?idnumber=${course.id}`).text(course.name)
                 ),
@@ -99,8 +117,9 @@
         const headerRow = $("<div>")
             .addClass("divTableRow head")
             .appendTo(tableBody);
-        ["科目", "課題", "提出期限", "提出状況"].forEach(name =>
-            $("<div>").addClass("divTableHead").text(name).appendTo(headerRow))
+        $("<div>").addClass("divTableHead checkboxRow").appendTo(headerRow);
+            ["科目", "課題", "提出期限", "提出状況"].forEach(name =>
+            $("<div>").addClass("divTableHead").text(name).appendTo(headerRow));
 
         showAssignments(GM_getValue("assignments"));
     });

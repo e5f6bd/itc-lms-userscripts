@@ -39,3 +39,9 @@
     cursor: pointer;
     font-weight: bold;
 }
+#assignmentsTableBody .checkboxRow {
+    width: 30px;
+}
+#assignmentsTableBody .disabledRow > .divTableCell {
+    background: gray;
+}
