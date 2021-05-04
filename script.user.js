@@ -27,7 +27,7 @@
         const page = parser.parseFromString(await res.text(), 'text/html');
         document.hoge = page;
         return [...page.querySelectorAll("#reportList .result_list_line")].map(e => {
-            const [a, , c, d] = e.querySelectorAll(".result_list_txt");
+            const [a, , c, , d] = e.querySelectorAll(".result_list_txt");
             return {
                 title: a.innerHTML,
                 until: c.innerHTML,
