@@ -4,7 +4,7 @@
 // @version      0.1
 // @description  ITC-LMS の課題一覧をほげほげ
 // @author       You
-// @match        https://itc-lms.ecc.u-tokyo.ac.jp/lms/timetable
+// @match        https://itc-lms.ecc.u-tokyo.ac.jp/lms/*
 // @grant        GM_addStyle
 // @grant        GM_getResourceText
 // @grant        GM_setValue
@@ -49,14 +49,14 @@
             const row = $("<div>")
                 .addClass("divTableRow data")
                 .appendTo(tableBody);
-            if(disabledList.indexOf(url) !== -1)
+            if (disabledList.indexOf(url) !== -1)
                 row.addClass("disabledRow");
             row.append([
                 $("<div>").addClass("divTableCell").click(() => {
                     row.toggleClass("disabledRow");
                     const disabledList = GM_getValue("disabledAssignments") || [];
                     const index = disabledList.indexOf(url);
-                    if(row.hasClass("disabledRow")) {
+                    if (row.hasClass("disabledRow")) {
                         if (index === -1)
                             disabledList.push(url)
                     } else {
@@ -92,7 +92,7 @@
         button.removeClass("active").children("a").text("更新");
     }
 
-    $(() => {
+    const injectionForTimetablePage = () => {
         GM_addStyle(GM_getResourceText("customCSS"));
         const wrapper = $("<div>")
             .attr("id", "assignments-list")
@@ -118,9 +118,23 @@
             .addClass("divTableRow head")
             .appendTo(tableBody);
         $("<div>").addClass("divTableHead checkboxRow").appendTo(headerRow);
-            ["科目", "課題", "提出期限", "提出状況"].forEach(name =>
+        ["科目", "課題", "提出期限", "提出状況"].forEach(name =>
             $("<div>").addClass("divTableHead").text(name).appendTo(headerRow));
 
         showAssignments(GM_getValue("assignments"));
+    };
+
+    const injectionForReportSubmissionPage = () => {
+        const url = new URL(location.href);
+        const course = url.searchParams.get("idnumber");
+        const elem = $(".page_name_txt");
+        elem.wrap($("<a>").attr("href", `https://itc-lms.ecc.u-tokyo.ac.jp/lms/course?idnumber=${course}`));
+    };
+
+    $(() => {
+        const [, path] = location.href.split(`https://itc-lms.ecc.u-tokyo.ac.jp/lms/`);
+        console.log(path);
+        if (path === "timetable") injectionForTimetablePage()
+        if (path.startsWith("course/report/submission")) injectionForReportSubmissionPage();
     });
 })();
